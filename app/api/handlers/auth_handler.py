@@ -79,14 +79,13 @@ async def reset_password(payload: ResetPasswordRequest):
 
 @auth_router.get("/validate-token", response_model=ValidateTokenResponse)
 async def validate_token(user: Annotated[User, Depends(get_current_user)]):
-   
-    if not user:                                     
-        raise HTTPException(detail="Un Authenticated", status_code=401)                              
-    if user:
-        return {
-            "success": True,
-            "message": "Token verified successfully"
-        } 
+    if not user:
+        raise HTTPException(detail="Un Authenticated", status_code=401)
+    return {
+        "success": True,
+        "message": "Token verified successfully",
+        "user": user,
+    }
 
 @auth_router.post("/update-profile", response_model=UpdateProfileResponse)
 async def update_profile(data: UpdateProfileRequest, user: Annotated[User, Depends(get_current_user)]):
